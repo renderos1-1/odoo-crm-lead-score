@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Show the score on the opportunity form, next to expected revenue -->
+    <record id="crm_lead_view_form_score" model="ir.ui.view">
+        <field name="name">crm.lead.form.score</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='expected_revenue']" position="after">
+                <field name="lead_score"/>
+                <field name="score_band"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Show the score (sortable) on the opportunity pipeline list -->
+    <record id="crm_lead_view_tree_score" model="ir.ui.view">
+        <field name="name">crm.lead.tree.score</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='expected_revenue']" position="after">
+                <field name="lead_score" optional="show"/>
+                <field name="score_band" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add Score Band to the search view so it can be used as a group-by -->
+    <record id="crm_lead_view_search_score" model="ir.ui.view">
+        <field name="name">crm.lead.search.score</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <group string="Score">
+                    <filter name="group_score_band" string="Score Band"
+                            context="{'group_by': 'score_band'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
